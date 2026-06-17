@@ -41,10 +41,17 @@ void warn(const std::string& msg) {
     std::cout << c(config::YELLOW, "  ⚠  " + msg) << std::endl;
 }
 
+static void trim_cr(std::string& s) {
+    if (!s.empty() && s.back() == '\r') {
+        s.pop_back();
+    }
+}
+
 std::string prompt(const std::string& label) {
     std::cout << c(config::BOLD, "  " + label + ": ");
     std::string line;
     std::getline(std::cin, line);
+    trim_cr(line);
     return line;
 }
 
@@ -332,6 +339,7 @@ void input_loop(const std::string& base_url, const std::string& token, const std
             stop.store(true);
             break;
         }
+        trim_cr(line);
 
         if (line.empty()) continue;
 
