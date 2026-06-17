@@ -47,6 +47,15 @@ static std::string require_auth(const httplib::Request& req, httplib::Response& 
 
 void setup_routes(httplib::Server& svr, repository::Repository& repo) {
     // ---------------------------------------------------------------------------
+    // Test Reset Endpoint (to clear broadcaster subscriptions between tests)
+    // ---------------------------------------------------------------------------
+    svr.Post("/test/reset", [](const httplib::Request& req, httplib::Response& res) {
+        broadcaster::g_broadcaster.clear();
+        res.status = 200;
+        res.set_content("{\"status\":\"ok\"}", "application/json");
+    });
+
+    // ---------------------------------------------------------------------------
     // Register
     // ---------------------------------------------------------------------------
     svr.Post("/register", [&repo](const httplib::Request& req, httplib::Response& res) {
@@ -259,12 +268,20 @@ void setup_routes(httplib::Server& svr, repository::Repository& repo) {
             res.set_content_provider(
                 "text/event-stream",
                 [username, q](size_t offset, httplib::DataSink& sink) {
-                    if (!sink.is_writable()) {
-                        return false;
+                    nlohmann::json event;
+                    bool popped = false;
+
+                    // Poll the queue with short timeouts so we can check sink status quickly
+                    for (int i = 0; i < 300; ++i) {
+                        if (!sink.is_writable()) {
+                            return false;
+                        }
+                        if (q->pop(event, std::chrono::milliseconds(50))) {
+                            popped = true;
+                            break;
+                        }
                     }
 
-                    nlohmann::json event;
-                    bool popped = q->pop(event, std::chrono::milliseconds(15000));
                     if (popped) {
                         std::string payload = event.dump();
                         std::string sse_data = "event: message\ndata: " + payload + "\n\n";
