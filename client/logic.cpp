@@ -391,7 +391,7 @@ void input_loop(const std::string& base_url, const std::string& token, const std
                 } else {
                     httplib::Client cli(base_url);
                     nlohmann::json edit_req = {{"content", new_text}};
-                    auto res = cli.Patch("/messages/" + id_str, edit_req.dump(), "application/json", headers);
+                    auto res = cli.Patch("/messages/" + id_str, headers, edit_req.dump(), "application/json");
                     if (res && res->status == 200) {
                         ok("Message #" + id_str + " updated.");
                     } else {
@@ -430,7 +430,7 @@ void input_loop(const std::string& base_url, const std::string& token, const std
             {"content", line}
         };
 
-        auto res = cli.Post("/messages", msg_req.dump(), "application/json", headers);
+        auto res = cli.Post("/messages", headers, msg_req.dump(), "application/json");
         if (!res || res->status != 201) {
             std::string detail = res ? res->body : "network error";
             err("Send failed: " + detail);
