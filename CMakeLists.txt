@@ -43,5 +43,16 @@ FetchContent_MakeAvailable(bcrypt)
 find_package(SQLite3 REQUIRED)
 find_package(OpenSSL REQUIRED)
 
+# 5. Fetch Google Test
+FetchContent_Declare(
+    googletest
+    URL https://github.com/google/googletest/archive/refs/tags/v1.14.0.tar.gz
+)
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+FetchContent_MakeAvailable(googletest)
+
+enable_testing()
+
 add_subdirectory(server)
 add_subdirectory(client)
+add_subdirectory(tests)
