@@ -15,8 +15,10 @@ int main() {
         auth::init_jwt();
 
         // Initialize SQLite connection and Repository
-        // Keep DB file name consistent with python (messenger.db)
-        repository::SqliteDb db("messenger.db");
+        // Keep DB file name consistent with python (messenger.db), allow test override
+        const char* db_path_env = std::getenv("MESSENGER_DB_PATH");
+        std::string db_file = db_path_env ? db_path_env : "messenger.db";
+        repository::SqliteDb db(db_file);
         repository::Repository repo(db);
         repo.create_tables();
         std::cout << "Database tables validated successfully." << std::endl;
