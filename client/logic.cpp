@@ -239,8 +239,7 @@ void listen_stream(const std::string& base_url, const std::string& token, const 
 
     while (!stop.load()) {
         httplib::Client cli(base_url);
-        // Remove read timeout to allow long polling keepalives
-        cli.set_read_timeout(0);
+        // Use default read timeout (300s) to allow blocking socket reads on SSE
 
         std::string path = "/stream?token=" + token;
         std::string buffer;

@@ -127,6 +127,9 @@ While inside the client's interactive input loop, you can type `/help` or use an
 ```text
 .
 ├── CMakeLists.txt         # Root CMake project configuration
+├── .env.example           # Template for server configuration
+├── .env                   # Local server configuration (ignored by git)
+├── messenger.db           # SQLite database file containing tables and indices
 ├── client/
 │   ├── CMakeLists.txt     # Client build setup
 │   ├── config.hpp         # Terminal colors and banner configuration

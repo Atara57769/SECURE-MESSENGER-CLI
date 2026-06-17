@@ -261,11 +261,10 @@ void setup_routes(httplib::Server& svr, repository::Repository& repo) {
 
             auto q = broadcaster::g_broadcaster.subscribe(username);
 
-            res.set_header("Content-Type", "text/event-stream");
             res.set_header("Cache-Control", "no-cache");
             res.set_header("X-Accel-Buffering", "no");
 
-            res.set_content_provider(
+            res.set_chunked_content_provider(
                 "text/event-stream",
                 [username, q](size_t offset, httplib::DataSink& sink) {
                     nlohmann::json event;
