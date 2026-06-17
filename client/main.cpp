@@ -90,7 +90,7 @@ int main(int argc, char* argv[]) {
     std::atomic<bool> stop(false);
 
     // Run SSE stream listener in a background thread
-    std::thread listener_thread([&base_url, &token, &username, &stop]() {
+    std::thread listener_thread([base_url, token, username, &stop]() {
         logic::listen_stream(base_url, token, username, stop);
     });
 

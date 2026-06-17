@@ -310,9 +310,11 @@ void listen_stream(const std::string& base_url, const std::string& token, const 
             return true;
         });
 
-        if (stop.load()) break;
-
-        warn("Stream connection lost — reconnecting in 3 s…");
+        if (!res) {
+            warn("Stream connection lost (Error: " + std::to_string(static_cast<int>(res.error())) + ") — reconnecting in 3 s…");
+        } else {
+            warn("Stream connection lost (Status: " + std::to_string(res->status) + ") — reconnecting in 3 s…");
+        }
         std::this_thread::sleep_for(std::chrono::seconds(3));
     }
 }
