@@ -111,8 +111,8 @@ std::optional<nlohmann::json> decode_token(const std::string& token) {
         verifier.verify(decoded);
 
         nlohmann::json payload = nlohmann::json::object();
-        for (const auto& pair : decoded.get_payload_claims()) {
-            payload[pair.first] = pair.second.as_json();
+        for (const auto& pair : decoded.get_payload_json()) {
+            payload[pair.first] = pair.second;
         }
         return payload;
     } catch (const std::exception& e) {

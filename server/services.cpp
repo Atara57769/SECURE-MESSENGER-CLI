@@ -284,7 +284,7 @@ nlohmann::json to_json(const MessageResponse& msg) {
         {"recipient", msg.recipient},
         {"content", msg.content},
         {"created_at", utils::db_time_to_iso(msg.created_at)},
-        {"updated_at", msg.updated_at.empty() ? nullptr : utils::db_time_to_iso(msg.updated_at)},
+        {"updated_at", msg.updated_at.empty() ? nlohmann::json() : nlohmann::json(utils::db_time_to_iso(msg.updated_at))},
         {"is_deleted", msg.is_deleted}
     };
 }
