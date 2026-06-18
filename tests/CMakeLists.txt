@@ -5,11 +5,15 @@ add_executable(messenger_tests
     test_auth.cpp
     test_repository.cpp
     test_services.cpp
-    ../server/routes.cpp
-    ../server/services.cpp
+    ../server/routes/routes_common.cpp
+    ../server/routes/user_routes.cpp
+    ../server/routes/message_routes.cpp
+    ../server/services/user_services.cpp
+    ../server/services/message_services.cpp
     ../server/auth.cpp
     ../server/crypto.cpp
-    ../server/repository.cpp
+    ../server/repositories/user_repository.cpp
+    ../server/repositories/message_repository.cpp
     ../server/broadcaster.cpp
     ../server/utils.cpp
 )

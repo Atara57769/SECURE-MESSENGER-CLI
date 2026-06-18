@@ -1,6 +1,8 @@
 #include "database.hpp"
-#include "repository.hpp"
-#include "routes.hpp"
+#include "repositories/user_repository.hpp"
+#include "repositories/message_repository.hpp"
+#include "routes/user_routes.hpp"
+#include "routes/message_routes.hpp"
 #include "crypto.hpp"
 #include "auth.hpp"
 #include <httplib.h>
@@ -19,15 +21,18 @@ int main() {
         const char* db_path_env = std::getenv("MESSENGER_DB_PATH");
         std::string db_file = db_path_env ? db_path_env : "messenger.db";
         repository::SqliteDb db(db_file);
-        repository::Repository repo(db);
-        repo.create_tables();
+        repository::UserRepository user_repo(db);
+        repository::MessageRepository message_repo(db);
+        user_repo.create_tables();
+        message_repo.create_tables();
         std::cout << "Database tables validated successfully." << std::endl;
 
         // Initialize httplib server
         httplib::Server svr;
 
         // Mount REST and SSE routes
-        routes::setup_routes(svr, repo);
+        routes::setup_user_routes(svr, user_repo);
+        routes::setup_message_routes(svr, user_repo, message_repo);
 
         std::cout << "Server listening on http://0.0.0.0:8000" << std::endl;
         if (!svr.listen("0.0.0.0", 8000)) {

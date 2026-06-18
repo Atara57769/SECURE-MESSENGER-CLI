@@ -68,6 +68,20 @@ After a successful build, the binaries will be located under:
 
 ---
 
+## Running the Tests
+
+To compile and execute the automated test suite (GoogleTest):
+
+```bash
+# Compile the test suite target
+cmake --build build --target messenger_tests
+
+# Execute tests
+./build/tests/messenger_tests
+```
+
+---
+
 ## Running the Application
 
 ### 1. Starting the Server
@@ -136,14 +150,22 @@ While inside the client's interactive input loop, you can type `/help` or use an
 │   ├── logic.hpp/cpp      # Client CLI logic, networking, and SSE reader
 │   └── main.cpp           # Client entrypoint and auth loop
 └── server/
-    ├── CMakeLists.txt     # Server build setup
-    ├── main.cpp           # Server entrypoint and setup
-    ├── auth.hpp/cpp       # JWT generation and validation
-    ├── crypto.hpp/cpp     # AES-256-GCM encryption helper functions
-    ├── database.hpp       # RAII SQLite wrapper classes
-    ├── models.hpp         # Data structures (User, Message)
-    ├── repository.hpp/cpp # SQLite query mappings
-    ├── routes.hpp/cpp     # REST and SSE HTTP route setups
-    ├── services.hpp/cpp   # Business service layer
-    └── utils.hpp/cpp      # General helper functions (timestamp, base64)
+    ├── CMakeLists.txt            # Server build setup
+    ├── main.cpp                  # Server entrypoint and setup
+    ├── auth.hpp/cpp              # JWT generation and validation
+    ├── crypto.hpp/cpp            # AES-256-GCM encryption helper functions
+    ├── database.hpp              # RAII SQLite wrapper classes
+    ├── models.hpp                # Data structures (User, Message)
+    ├── repositories/
+    │   ├── user_repository.hpp/cpp   # User SQLite query mappings
+    │   └── message_repository.hpp/cpp# Message SQLite query mappings
+    ├── routes/
+    │   ├── routes_common.hpp/cpp     # Route authorization helpers
+    │   ├── user_routes.hpp/cpp       # User REST & SSE route configurations
+    │   └── message_routes.hpp/cpp    # Message REST route configurations
+    ├── services/
+    │   ├── service_exception.hpp     # Custom services exception definition
+    │   ├── user_services.hpp/cpp     # User registration and login services
+    │   └── message_services.hpp/cpp  # Message operations service layer
+    └── utils.hpp/cpp             # General helper functions (timestamp, base64)
 ```

@@ -4,27 +4,19 @@
 #include "models.hpp"
 #include <optional>
 #include <vector>
+#include <string>
 
 namespace repository {
 
-class Repository {
+class MessageRepository {
 private:
     SqliteDb& db_;
 
 public:
-    Repository(SqliteDb& db);
+    MessageRepository(SqliteDb& db);
 
     // Create database tables if they do not exist
     void create_tables();
-
-    // Query user by username
-    std::optional<User> get_user_by_username(const std::string& username);
-
-    // Create a new user record
-    User create_user(const std::string& username, const std::string& password_hash);
-
-    // Increment a user's login version
-    void increment_login_version(int user_id);
 
     // Create a message record
     Message create_message(const std::string& sender, const std::string& recipient, const std::string& ciphertext);

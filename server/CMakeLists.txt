@@ -1,13 +1,19 @@
 add_executable(messenger_server
     main.cpp
-    routes.cpp
-    services.cpp
+    routes/routes_common.cpp
+    routes/user_routes.cpp
+    routes/message_routes.cpp
+    services/user_services.cpp
+    services/message_services.cpp
     auth.cpp
     crypto.cpp
-    repository.cpp
+    repositories/user_repository.cpp
+    repositories/message_repository.cpp
     broadcaster.cpp
     utils.cpp
 )
+
+target_include_directories(messenger_server PRIVATE ${CMAKE_CURRENT_SOURCE_DIR})
 
 target_link_libraries(messenger_server
     PRIVATE
