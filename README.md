@@ -156,6 +156,7 @@ While inside the client's interactive input loop, you can type `/help` or use an
     ├── crypto.hpp/cpp            # AES-256-GCM encryption helper functions
     ├── database.hpp              # RAII SQLite wrapper classes
     ├── models.hpp                # Data structures (User, Message)
+    ├── thread_safe_queue.hpp     # Template for thread-safe event queue
     ├── repositories/
     │   ├── user_repository.hpp/cpp   # User SQLite query mappings
     │   └── message_repository.hpp/cpp# Message SQLite query mappings
